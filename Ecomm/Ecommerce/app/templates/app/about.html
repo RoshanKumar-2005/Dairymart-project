@@ -1,0 +1,75 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}About{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h2 class="mb-3">About SR Dairy</h2>
+      <p class="lead">
+        SR Dairy is committed to delivering fresh, high-quality dairy products produced under strict hygiene and quality controls.
+      </p>
+      <p>
+        We offer milk, curd, paneer, ghee, cheese and flavored milk — carefully processed and tested to meet nutritional standards.
+      </p>
+      <h4 class="mt-4">How it started</h4>
+      <p>
+        SR Dairy began as a small family venture in 2025 with a simple mission: bring fresh, wholesome dairy from trusted local farms to nearby communities.
+        Starting with a single pasteurisation unit and a handful of local suppliers, the founders focused on hygiene, transparency and fair pricing.
+        Over the years the business grew — investing in modern processing, expanding the product range and partnering with retailers — while keeping its original commitment to quality.
+      </p>
+      <ul>
+        <li>Locally sourced milk from trusted farms</li>
+        <li>Hygienic processing &amp; quality testing</li>
+        <li>Sustainable packaging and timely delivery</li>
+      </ul>
+    </div>
+    <div class="col-md-4 text-center">
+      <img src="{% static 'app/images/banner/b1.png' %}" alt="About" class="img-fluid rounded" style="max-height:300px;">
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <h3 class="mb-4">Leadership</h3>
+
+    <div class="col-md-4 mb-3">
+      <div class="card p-3 h-100">
+        <img src="{% static 'app/images/product/founder.png' %}" class="card-img-top mx-auto rounded-circle" alt="Founder" style="width:120px; height:120px; object-fit:cover;">
+        <div class="card-body">
+          <h5 class="card-title">Founder</h5>
+          <p class="card-text small">
+            Mr. Roshan Kumar, Founder started SR Dairy with a vision to provide safe and nutritious dairy. He leads product quality, sourcing and strategic partnerships.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card p-3 h-100">
+        <img src="{% static 'app/images/product/productionhead.png' %}" class="card-img-top mx-auto rounded-circle" alt="Co-founder" style="width:120px; height:120px; object-fit:cover;">
+        <div class="card-body">
+          <h5 class="card-title">Co‑Founder</h5>
+          <p class="card-text small">
+            Ms. Sagar Kumar, CoFounder spearheads operations and production. With years of experience in dairy processing, she ensures hygienic manufacturing and product consistency.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card p-3 h-100">
+        <img src="{% static 'app/images/product/s.png' %}" class="card-img-top mx-auto rounded-circle" alt="Head Logistics" style="width:120px; height:120px; object-fit:cover;">
+        <div class="card-body">
+          <h5 class="card-title">Head — Logistics & Supply</h5>
+          <p class="card-text small">
+            Oversees delivery, cold-chain logistics and ensures products reach customers fresh and on time.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<br>
+{% endblock main-content %}

@@ -1,0 +1,49 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+  <h3 class="text-center mb-4">💳 Checkout</h3>
+  <hr>
+
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm p-4 rounded-3">
+        <div class="text-center mb-3">
+          <img src="{{ product.product_image.url }}" alt="{{ product.title }}" width="200" class="rounded">
+        </div>
+
+        <h5 class="text-center text-capitalize">{{ product.title }}</h5>
+        <p class="text-center text-muted">{{ product.brand }}</p>
+
+        <div class="d-flex justify-content-between my-3">
+          <span>Selling Price:</span>
+          <span><del>₹{{ product.selling_price }}</del></span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <span>Discounted Price:</span>
+          <span class="fw-bold text-success">₹{{ product.discounted_price }}</span>
+        </div>
+
+        <hr>
+        <h5 class="text-center mb-3">Select Payment Method</h5>
+        <form method="post" action="">
+          {% csrf_token %}
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="payment" id="cod" value="COD" checked>
+            <label class="form-check-label" for="cod">Cash on Delivery (COD)</label>
+          </div>
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="radio" name="payment" id="online" value="Online">
+            <label class="form-check-label" for="online">Online Payment</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Confirm Purchase</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+{% endblock main-content %}

@@ -1,0 +1,42 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}My Orders{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">🛒 My Orders</h2>
+  <hr>
+
+  {% if orders %}
+    <div class="row">
+      {% for order in orders %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <img src="{{ order.product.product_image.url }}" class="card-img-top" alt="{{ order.product.title }}" style="height: 250px; object-fit: contain;">
+          <div class="card-body">
+            <h5 class="card-title">{{ order.product.title }}</h5>
+            <p class="text-success fw-bold mb-1">₹{{ order.product.discounted_price }}</p>
+            <p class="text-muted"><del>₹{{ order.product.selling_price }}</del></p>
+            <p class="mb-1"><strong>Quantity:</strong> {{ order.quantity }}</p>
+            <p class="mb-1"><strong>Status:</strong> 
+              <span class="badge 
+                {% if order.status == 'Delivered' %}bg-success
+                {% elif order.status == 'Processing' %}bg-warning
+                {% else %}bg-secondary{% endif %}">
+                {{ order.status }}
+              </span>
+            </p>
+            <p class="text-muted small mb-0">Ordered on: {{ order.ordered_date|date:"M d, Y H:i" }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center">
+      <h5 class="text-muted">You have no orders yet.</h5>
+      <a href="{% url 'home' %}" class="btn btn-primary mt-3">🛍️ Continue Shopping</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock main-content %}

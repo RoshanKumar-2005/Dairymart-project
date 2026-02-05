@@ -1,0 +1,55 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Contact{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-6">
+      <h2>Contact Us</h2>
+
+      {% if success %}
+      <div class="alert alert-success">Thank you. Your message has been sent.</div>
+      {% endif %}
+
+      <form method="post" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input name="name" type="text" class="form-control" required value="{{ formdata.name|default:'' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input name="email" type="email" class="form-control" required value="{{ formdata.email|default:'' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Subject</label>
+          <input name="subject" type="text" class="form-control" required value="{{ formdata.subject|default:'' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Message</label>
+          <textarea name="message" class="form-control" rows="5" required>{{ formdata.message|default:'' }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Send Message</button>
+      </form>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Reach Us</h4>
+      <p>
+        SR Dairy<br>
+        Phone: +91 9996669990<br>
+        Email: srdairy@gmail.com<br>
+        Address: Bhubaneswar, Odisha, India<br>
+        pin-code:700991
+      </p>
+
+      <div class="mt-3">
+        <!-- simple map placeholder -->
+        <img src="{% static 'app/images/banner/b1.png' %}" alt="map" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+{% endblock main-content %}

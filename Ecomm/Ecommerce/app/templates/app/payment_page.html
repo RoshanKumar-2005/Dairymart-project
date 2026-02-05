@@ -1,0 +1,22 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block main-content %}
+
+<div class="container text-center my-5">
+    <h3>🔐 Payment</h3>
+    <p>Please scan the QR code below and complete your payment.</p>
+
+    <img src="{% static 'app/images/product/qr_code.jpg' %}" width="250" alt="QR Code">
+
+    <hr>
+
+    <form method="POST" action="{% url 'confirm_payment' %}">
+        {% csrf_token %}
+        <label class="form-label mt-3"><b>Enter Transaction ID</b></label>
+        <input type="text" name="transaction_id" class="form-control w-50 m-auto" required>
+
+        <button class="btn btn-primary mt-3">Submit Payment</button>
+    </form>
+</div>
+<br>
+{% endblock %}

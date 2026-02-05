@@ -1,0 +1,35 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}{{ product.title }}{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.product_image %}
+            <img src="{{ product.product_image.url }}" alt="{{ product.title }}" class="img-fluid" style="object-fit: contain; max-height:500px; width:100%; padding:20px;">
+            {% else %}
+            <img src="{% static 'app/images/product/placeholder.png' %}" alt="no image" class="img-fluid">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h2>{{ product.title }}</h2>
+            <p>
+                <span class="text-decoration-line-through">₹{{ product.selling_price }}</span>
+                <span class="text-success fw-bold ms-2">₹{{ product.discounted_price }}</span>
+            </p>
+            <h5>Description</h5>
+            <p>{{ product.description }}</p>
+
+            {% if product.composition %}
+            <h5>Composition</h5>
+            <p>{{ product.composition }}</p>
+            {% endif %}
+
+            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
+            <a href="{% url 'buy_now' product.id %}" class="btn btn-success">Buy Now</a>
+
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

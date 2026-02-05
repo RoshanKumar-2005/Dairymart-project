@@ -1,0 +1,76 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Category{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4 text-capitalize">Category: {{ category }}</h2>
+
+    <div class="row">
+        {% for pr in product %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card shadow-sm rounded-3 text-center h-100">
+                <a href="{% url 'productdetails' pr.id %}">
+                    <img src="{{ pr.product_image.url }}" 
+                         class="card-img-top" 
+                         alt="{{ pr.title }}" 
+                         style="height: 280px; object-fit: contain; padding: 20px;">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ pr.title }}</h5>
+                    <p class="card-text">
+                        <span class="text-decoration-line-through text-muted">₹{{ pr.selling_price }}</span>
+                        <span class="text-success fw-bold ms-2">₹{{ pr.discounted_price }}</span>
+                    </p>
+
+                    <div class="d-flex justify-content-center gap-2 mt-2">
+                        <a href="{% url 'add_to_cart' pr.id %}" class="btn btn-sm btn-primary">
+                            🛒 Add to Cart
+                        </a>
+
+                        {% if pr.id in wishlist_items %}
+                            <button class="btn btn-sm btn-danger toggle-wishlist" data-product="{{ pr.id }}">❤️</button>
+                        {% else %}
+                            <button class="btn btn-sm btn-outline-danger toggle-wishlist" data-product="{{ pr.id }}">♡</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No products found in this category.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(document).on("click", ".toggle-wishlist", function (e) {
+    e.preventDefault();
+    const button = $(this);
+    const productId = button.data("product");
+
+    $.ajax({
+      url: "{% url 'toggle_wishlist' %}",
+      method: "POST",
+      data: {
+        product_id: productId,
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+      },
+      success: function (response) {
+        if (response.status === "added") {
+          button.removeClass("btn-outline-danger").addClass("btn-danger").text("❤️");
+        } else if (response.status === "removed") {
+          button.removeClass("btn-danger").addClass("btn-outline-danger").text("♡");
+        }
+      },
+      error: function () {
+        alert("Please login to use wishlist.");
+      },
+    });
+  });
+</script>
+<br>
+{% endblock main-content %}

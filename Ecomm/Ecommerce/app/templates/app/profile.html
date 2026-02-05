@@ -1,0 +1,56 @@
+{% extends 'app/base.html' %}
+{% block title %}My Profile{% endblock title %}
+
+{% block main-content %}
+<style>
+    .profile-card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
+    .profile-card:hover { transform: translateY(-5px); }
+    .profile-header {
+        text-align: center;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        border-radius: 15px 15px 0 0;
+        padding: 20px;
+    }
+    .form-section { padding: 30px; }
+</style>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="profile-card shadow">
+                <div class="profile-header">
+                    <h3 class="mt-2">{{ request.user.get_full_name|default:request.user.username }}</h3>
+                </div>
+
+                <div class="form-section">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" class="p-3">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-success px-4">Save Changes</button>
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary ms-2">Back to Home</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock main-content %}

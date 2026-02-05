@@ -1,0 +1,44 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Login{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <h3 class="text-center mb-4">Login</h3>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form action="" method="post" class="shadow p-4 border rounded">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">Username:</label>
+                    {{ form.username }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_password" class="form-label">Password:</label>
+                    {{ form.password }}
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Login</button>
+                </div>
+            </form>
+            <p class="text-center mt-3">
+    <a href="{% url 'password_reset' %}">Forgot your password?</a>
+</p>
+
+
+            <p class="text-center mt-3">Don't have an account? <a href="{% url 'customerregistration' %}">Register</a></p>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock main-content %}

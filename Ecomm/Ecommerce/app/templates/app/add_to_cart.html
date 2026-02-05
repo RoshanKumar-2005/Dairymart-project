@@ -1,0 +1,96 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}My Cart{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+  <h3 class="text-center mb-4">🛒 My Shopping Cart</h3>
+  <hr>
+
+  {% if cart_items %}
+  <div class="row">
+    <div class="col-md-8">
+      {% for item in cart_items %}
+      <div class="card mb-3 shadow-sm p-3 rounded-3 cart-item" data-id="{{ item.id }}">
+        <div class="row g-0 align-items-center">
+          <div class="col-md-3 text-center">
+            <img src="{{ item.product.product_image.url }}" class="img-fluid rounded" alt="{{ item.product.title }}" width="100">
+          </div>
+          <div class="col-md-6">
+            <h5 class="card-title text-capitalize">{{ item.product.title }}</h5>
+            <p class="text-muted mb-1">{{ item.product.brand }}</p>
+            <p>
+              <span class="fw-bold">₹{{ item.product.discounted_price }}</span>
+              <del class="text-muted small">₹{{ item.product.selling_price }}</del>
+            </p>
+
+
+            <div class="d-flex align-items-center mt-2">
+              <button class="btn btn-outline-secondary btn-sm decrease" data-id="{{ item.id }}">−</button>
+              <span class="fw-bold mx-2 quantity">{{ item.quantity }}</span>
+              <button class="btn btn-outline-secondary btn-sm increase" data-id="{{ item.id }}">+</button>
+            </div>
+          </div>
+
+          <div class="col-md-3 text-end">
+            <a href="{% url 'buy_now' item.product.id %}" class="btn btn-success btn-sm mb-2">Buy Now</a>
+            <form action="{% url 'remove_cart' item.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-4 shadow-sm rounded-3">
+        <h5 class="mb-3">🧾 Order Summary</h5>
+        <p>Total Items: <span id="total-items">{{ cart_items|length }}</span></p>
+        <p>Shipping Charges: ₹<span id="shipping-charge">40</span></p>
+        <p class="fw-bold">Total Price (Incl. Shipping): ₹<span id="total-price">{{ total_amount|add:40 }}</span></p>
+        <a href="{% url 'checkout' %}" class="btn btn-primary w-100">Proceed to Checkout</a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="text-center mt-5">
+    <h4>Your cart is empty 😔</h4>
+    <a href="/" class="btn btn-outline-primary mt-3">Continue Shopping</a>
+  </div>
+  {% endif %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function(){
+
+    $('.increase').click(function(){
+      const id = $(this).data('id');
+      updateQuantity(id, 'increase');
+    });
+
+
+    $('.decrease').click(function(){
+      const id = $(this).data('id');
+      updateQuantity(id, 'decrease');
+    });
+
+    function updateQuantity(id, action){
+      $.ajax({
+        url: `/update-cart/${id}/${action}/`,
+        type: 'POST',
+        data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+        success: function(data){
+          $(`.cart-item[data-id="${id}"] .quantity`).text(data.quantity);
+          $('#total-price').text(data.total_price);
+          if (data.quantity <= 0){
+            $(`.cart-item[data-id="${id}"]`).remove();
+          }
+        }
+      });
+    }
+  });
+</script>
+{% endblock main-content %}

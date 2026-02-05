@@ -1,0 +1,89 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Checkout{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+    <h3 class="text-center mb-4">🛍️ Checkout</h3>
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 rounded-3">
+                <h5 class="mb-3">📦 Shipping Details</h5>
+
+                <form method="post" action="{% url 'place_order' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea name="address" id="address" class="form-control" rows="3" placeholder="Enter your address" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" name="city" id="city" class="form-control" placeholder="Enter your city" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="zip" class="form-label">ZIP Code</label>
+                        <input type="text" name="zip" id="zip" class="form-control" placeholder="Enter ZIP Code" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" name="phone" id="phone" class="form-control" placeholder="Enter phone number" required>
+                    </div>
+
+                    <a href="{% url 'payment_page' %}" class="btn btn-success w-100 mt-3">
+                            Proceed to Payment
+                    </a>
+
+
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 rounded-3">
+                <h5 class="mb-3">🧾 Order Summary</h5>
+
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                        <p class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                            <strong>{{ item.product.title }}:</strong>
+                            <small>Qty: {{ item.quantity }}</small>
+                            <span>₹{{ item.product.discounted_price }}</span>
+                        </p>
+                    {% endfor %}
+                    
+                    <hr>
+                    <p class="d-flex justify-content-between">
+                        <strong>Subtotal:</strong>
+                        <span>₹{{ subtotal }}</span>
+                    </p>
+
+                    <p class="d-flex justify-content-between">
+                        <strong>Shipping Charges:</strong>
+                        <span>₹40</span>
+                    </p>
+                    
+                    <hr>
+                    <h5 class="d-flex justify-content-between fw-bold">
+                        <strong>Total:</strong>
+                        <span>₹{{ total_amount }}</span>
+                    </h5>
+                {% else %}
+                    <p>Your cart is empty 😔</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock main-content %}
